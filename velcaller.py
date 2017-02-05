@@ -1,3 +1,4 @@
+import json
 from string import Template
 from velsession import VelSession
 
@@ -14,7 +15,7 @@ class VelCaller():
             'delete':   dict()
         }    
 
-    def vget(self, key, **params):
+    def vget(self, key, pattern='json', **params):
         if(self.vsession != None):
             if len(params) > 0:
                 if 'url' in params:
@@ -22,13 +23,18 @@ class VelCaller():
                 else:
                     url = self.vsession.base_url + self.restful_api_urls['get'][key]
                 if 'subst' in params:
+                    # The type of 'subst' is dict
                     url = Template(url).substitute(params['subst'])
                 if 'vfilter' in params:
                     url = url + '?' + params['vfilter']   
             else:
                 url = self.vsession.base_url + self.restful_api_urls['get'][key]
             
-            return self.vsession.get(url)
+            r = self.vsession.get(url).text
+            if(pattern == 'json'):
+                r = json.loads(r)
+            
+            return r
             
     def vpost(self, key, body=None, **params):
         if(self.vsession != None):

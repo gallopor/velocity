@@ -56,8 +56,8 @@ class Reservation(VelCaller):
         '''
         reservation's name is topology's name plus current time stamp.
         '''
-        tp_f = 'name::' + name
-        tp_info = self.vget('topologies', filter=tp_f)
+        tp_f = 'filter=name::' + name
+        tp_info = self.vget('topologies', vfilter=tp_f)
         tp_id = tp_info['topologies'][0]['id']
      
         ts = time.strftime("%Y%m%d%H%M%S")
@@ -78,21 +78,11 @@ class Reservation(VelCaller):
 
         return self.vpost('reservation_action', subst=subst)
            
-    def resvQuery(self, resv_id=None, vfilter=None):
-        if(resv_id != None):
-            subst = {'reservation_id': resv_id}
-            return resv.vget('reservation', subst=subst)
-        if(vfilter != None):
-#            params = 'filter=' + vfilter
-            return resv.vget('reservations', vfilter=vfilter)
-        return self.last_reservation
-        
-        
     def getActResvByTopo(self, tp_name):
         tp_f = 'filter=name::' + tp_name
         tp_info = self.vget('topologies', vfilter=tp_f)
         tp_id = tp_info['topologies'][0]['id']
-        print(tp_id)
+
         resv_f = 'filter=status::ACTIVE' + '&' + 'filter=topologyId::' + tp_id
         return self.vget('reservations', vfilter=resv_f)
     
@@ -101,14 +91,18 @@ if __name__ == "__main__":
     vs = VelSession(host='192.168.1.11', user='jimmy', pswd='Spirent')
     resv = Reservation(vs)
 
-#    resv_info = resv.topoReserve(name='ResourcesNoLink', duration=600)
-#    print(resv_info)
+    rrst = resv.topoReserve(name='ResourcesNoLink', duration=600)
+    print(rrst)
+    r_id = rrst['id']
+     
+    time.sleep(30)
+
+    rinfo = resv.getActResvByTopo('ResourcesNoLink')
+    print(rinfo)
+    if(rinfo['reservations'][0]['id'] == r_id):
+        print('OK')
     
-#    time.sleep(5)
-    
-    resv_info = resv.getActResvByTopo('ResourcesNoLink')
-    print(resv_info)
-#    resv.topoRelease()
+    resv.topoRelease()
 
     
 # url = Template(velocity_restful_url['topo_detail'])

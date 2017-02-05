@@ -21,8 +21,7 @@ class VelSession():
             self.headers['X-Auth-Token'] = rd['token']
 
     def get(self, url):
-        r = requests.get(url, headers=self.headers, verify=False)
-        return json.loads(r.text)
+        return requests.get(url, headers=self.headers, verify=False)
 
     def post(self, url, body):
         # Have to tranform dict to json string, then Velocity can parse successfully.
