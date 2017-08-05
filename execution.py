@@ -1,5 +1,5 @@
-from velsession import VelSession
-from velcaller import VelCaller
+from velocity.velsession import VelSession
+from velocity.velcaller import VelCaller
 
 class Execution(VelCaller):
 
@@ -48,7 +48,7 @@ class Execution(VelCaller):
         
 if __name__ == "__main__":
     import time
-    from settings import VELOCITY_IP, PIPELINE_SCRIPTS, PIPELINE_PARAMS
+    from velocity.settings import VELOCITY_IP, PIPELINE_SCRIPTS, PIPELINE_PARAMS
     
     vs = VelSession(host=VELOCITY_IP, user='jimmy', pswd='Spirent')
     ex = Execution(vs)

@@ -1,5 +1,5 @@
 import time
-from velcaller import VelCaller
+from velocity.velcaller import VelCaller
 
 class Reservation(VelCaller):
     '''
@@ -71,9 +71,18 @@ class Reservation(VelCaller):
         return self.vpost(url)
            
     def getActResvByTopo(self, tp_name):
-        url = '/velocity/api/reservation/v6/reservations/' 
         tp_id = self.getTopoIdByName(tp_name)
+        
+        url = '/velocity/api/reservation/v6/reservations/' 
         vfilter = ['status::ACTIVE', 'topologyId::' + tp_id]
+        return self.vget(url, filter=vfilter)
+    
+    def getActResvByMe(self):
+        user = self.vget('/velocity/api/user/v6/profile/current')
+        user_id = user['id']
+    
+        url = '/velocity/api/reservation/v6/reservations/' 
+        vfilter = ['status::ACTIVE', 'creatorId ::' + user_id]
         return self.vget(url, filter=vfilter)
     
     def getResvInPeriod(self, tp_name, start, end):
@@ -88,28 +97,8 @@ class Reservation(VelCaller):
         return self.vget(url, **dp)
         
 if __name__ == "__main__":
-    from velsession import VelSession
+    from velocity.velsession import VelSession
 
     vs = VelSession(host='192.168.1.21', user='daemon', pswd='Spirent')
     resv = Reservation(vs)
 
-    rrst = resv.topoReserve(name='STCvPair', duration=600)
-    print(rrst)
-#===============================================================================
-#     r_id = rrst['id']
-#       
-#     time.sleep(30)
-#  
-#     rinfo = resv.getActResvByTopo('STCvPair')
-#     print(rinfo)
-#     if(rinfo['reservations'][0]['id'] == r_id):
-#         print('OK')
-#      
-#     resv.topoRelease()
-#     st = str(int(time.mktime(time.strptime('201705010000', '%Y%m%d%H%M%S')) * 1000))
-# 
-#     et = str(int(time.mktime(time.strptime('201705260300', '%Y%m%d%H%M%S')) * 1000))
-# 
-#     info = resv.getResvInPeriod('STCvPair', st, et)
-#     print(info)
-#===============================================================================

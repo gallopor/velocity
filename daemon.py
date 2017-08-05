@@ -2,13 +2,13 @@ import os
 import json
 import time
 
-from tsboundary import tsboundary
-from velsession import VelSession
-from resource import Resource
-from reservation import Reservation
+from velocity.tsboundary import tsboundary
+from velocity.velsession import VelSession
+from velocity.resource import Resource
+from velocity.reservation import Reservation
 
-from settings import VELOCITY_IP, DAEMON_USER, DAEMON_PSWD, VELOCITY_DIR, \
-        REFRESH_INTERVAL, RESOURCE_CATEGORY, PIPELINE_SITES
+from velocity.settings import VELOCITY_IP, DAEMON_USER, DAEMON_PSWD, \
+        VELOCITY_DIR, REFRESH_INTERVAL, RESOURCE_CATEGORY, PIPELINE_SITES
 
 '''
  Collect schedule info.
