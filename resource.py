@@ -1,4 +1,4 @@
-from velocity.velcaller import VelCaller
+from velcaller import VelCaller
 
 class Resource(VelCaller):
     def __init__(self, vs):
@@ -20,7 +20,7 @@ class Resource(VelCaller):
     
         
 if __name__ == "__main__":
-    from velocity.velsession import VelSession
+    from velsession import VelSession
 
 #    vs = VelSession(host='192.168.1.21', user='daemon', pswd='Spirent')
     vs = VelSession(host='10.23.155.231', user='jimmy', pswd='Spirent')

@@ -1,5 +1,5 @@
 import time
-from velocity.velcaller import VelCaller
+from velcaller import VelCaller
 
 class Reservation(VelCaller):
     '''
@@ -97,7 +97,7 @@ class Reservation(VelCaller):
         return self.vget(url, **dp)
         
 if __name__ == "__main__":
-    from velocity.velsession import VelSession
+    from velsession import VelSession
 
     vs = VelSession(host='192.168.1.21', user='daemon', pswd='Spirent')
     resv = Reservation(vs)

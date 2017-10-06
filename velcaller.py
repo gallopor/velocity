@@ -1,6 +1,6 @@
 import json
 from collections import OrderedDict
-from velocity.velsession import VelSession
+from velsession import VelSession
 
 class VelCaller():
 
